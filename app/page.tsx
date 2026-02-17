@@ -1,65 +1,131 @@
-import Image from "next/image";
+import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
+import SectionLabel from "@/components/ui/SectionLabel";
+import SectionHeading from "@/components/ui/SectionHeading";
+import Button from "@/components/ui/Button";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <>
+      <Navigation />
+
+      <main>
+        {/* HERO */}
+        <section className="relative min-h-screen flex items-center justify-center bg-charcoal">
+          <div className="container-custom text-center">
+            <SectionLabel dark className="mb-4 block">
+              Hotel Kashish International
+            </SectionLabel>
+            <h1
+              className="text-hero text-ivory mb-6"
+              style={{ fontFamily: "var(--font-playfair)" }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              Where Every Occasion
+              <br />
+              Finds Its Place
+            </h1>
+            <p className="text-body text-ivory/60 max-w-[720px] mx-auto mb-10">
+              Kalyan East&apos;s premier destination for celebrations, dining,
+              and stays
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button variant="primary" size="lg" href="#celebrate">
+                Plan Your Event
+              </Button>
+              <Button variant="outline" size="lg" href="#stay">
+                Explore
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* TRUST */}
+        <section className="bg-ivory section-padding">
+          <div className="container-custom text-center">
+            <SectionLabel className="mb-4 block">Our Legacy</SectionLabel>
+            <SectionHeading>
+              Kalyan&apos;s Most Trusted Hospitality Address
+            </SectionHeading>
+            <p className="text-body text-charcoal/60 max-w-[720px] mx-auto mt-6">
+              Hotel Kashish International has been Kalyan East&apos;s address
+              for life&apos;s most important moments — from grand weddings to
+              intimate celebrations, from business conferences to nights out
+              with friends.
+            </p>
+          </div>
+        </section>
+
+        {/* CELEBRATE */}
+        <section id="celebrate" className="bg-charcoal section-padding">
+          <div className="container-custom text-center">
+            <SectionLabel dark className="mb-4 block">
+              Celebrations
+            </SectionLabel>
+            <SectionHeading dark>
+              Spaces That Rise to the Occasion
+            </SectionHeading>
+            <p className="text-body text-ivory/60 max-w-[720px] mx-auto mt-6">
+              Three distinctive halls, each designed for a different scale of
+              celebration. From intimate gatherings of 50 to grand events of
+              1000.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              {["Golden Eye", "Ruby Red", "Blue Moon"].map((hall) => (
+                <div
+                  key={hall}
+                  className="border border-white/10 bg-charcoal-light p-8 text-left"
+                >
+                  <h3
+                    className="text-xl text-ivory mb-2"
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    {hall}
+                  </h3>
+                  <p className="text-sm text-ivory/40">
+                    Full details coming in Sprint 2
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* STAY */}
+        <section id="stay" className="bg-ivory section-padding">
+          <div className="container-custom text-center">
+            <SectionLabel className="mb-4 block">Stay</SectionLabel>
+            <SectionHeading>Rest, Recharge, Return</SectionHeading>
+            <p className="text-body text-charcoal/60 max-w-[720px] mx-auto mt-6">
+              Room details coming in Sprint 2
+            </p>
+          </div>
+        </section>
+
+        {/* DINE */}
+        <section id="dine" className="bg-stone section-padding">
+          <div className="container-custom text-center">
+            <SectionLabel className="mb-4 block">Experience</SectionLabel>
+            <SectionHeading>Dine. Drink. Cheer.</SectionHeading>
+            <p className="text-body text-charcoal/60 max-w-[720px] mx-auto mt-6">
+              Dining details coming in Sprint 3
+            </p>
+          </div>
+        </section>
+
+        {/* CONTACT */}
+        <section id="contact" className="bg-ivory section-padding">
+          <div className="container-custom text-center">
+            <SectionLabel className="mb-4 block">Connect</SectionLabel>
+            <SectionHeading>Let&apos;s Plan Together</SectionHeading>
+            <p className="text-body text-charcoal/60 max-w-[720px] mx-auto mt-6">
+              Contact form coming in Sprint 3
+            </p>
+          </div>
+        </section>
       </main>
-    </div>
+
+      <Footer />
+    </>
   );
 }
