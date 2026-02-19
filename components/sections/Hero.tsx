@@ -14,16 +14,20 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
           src="/images/hero/hotel-exterior.jpg"
           alt="Hotel Kashish International - Kalyan East"
           fill
-          className="object-cover"
+          className="object-cover object-center sm:object-center"
           priority
           quality={85}
+          sizes="100vw"
+          style={{
+            objectPosition: "center 30%",
+          }}
         />
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal-dark/70 via-charcoal/50 to-charcoal-dark/80 z-10" />
