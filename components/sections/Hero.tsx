@@ -94,7 +94,7 @@ export default function Hero() {
         </div>
         <div className="overflow-hidden mb-6">
           <motion.h1
-            className="font-playfair text-hero text-gold leading-[1.1]"
+            className="font-playfair text-hero text-shimmer-gold leading-[1.1]"
             initial={{ y: "100%" }}
             animate={isLoaded ? { y: 0 } : {}}
             transition={{
@@ -109,7 +109,7 @@ export default function Hero() {
 
         {/* Subtitle */}
         <motion.p
-          className="font-inter text-body text-ivory/60 max-w-[600px] mx-auto mb-10"
+          className="font-inter text-body text-ivory/60 max-w-[500px] mx-auto mb-8 sm:mb-10 px-4 sm:px-0"
           initial={{ opacity: 0, y: 20 }}
           animate={isLoaded ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 1.2 }}

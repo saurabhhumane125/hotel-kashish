@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -16,28 +17,36 @@ export default function Trust() {
   return (
     <section className="bg-ivory section-padding">
       <div className="container-custom">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4 mb-16">
+        {/* Stats Grid — Premium Containers */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-12 sm:mb-16">
           {stats.map((stat, index) => (
-            <AnimateOnScroll key={stat.label} delay={index * 0.15}>
-              <div className="text-center">
+            <AnimateOnScroll key={stat.label} delay={index * 0.1}>
+              <motion.div
+                className="relative text-center py-6 sm:py-8 px-4 border border-stone-dark/20 bg-white group hover:border-gold/30 transition-all duration-500"
+                whileHover={{ y: -4 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                {/* Corner accent */}
+                <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-gold/40" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-gold/40" />
+
                 <AnimatedCounter
                   target={stat.number}
                   suffix={stat.suffix}
-                  className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-charcoal"
+                  className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal block"
                 />
-                <p className="font-cormorant text-sm sm:text-base text-gold-dark tracking-[0.1em] uppercase mt-2">
+                <p className="font-cormorant text-xs sm:text-sm text-gold-dark tracking-[0.1em] uppercase mt-2">
                   {stat.label}
                 </p>
-              </div>
+              </motion.div>
             </AnimateOnScroll>
           ))}
         </div>
 
         {/* Animated divider */}
-        <SectionDivider className="mb-12" />
+        <SectionDivider className="mb-10 sm:mb-12" />
 
-        {/* Brand statement with text reveal */}
+        {/* Brand statement */}
         <AnimateOnScroll>
           <div className="text-center max-w-[720px] mx-auto">
             <span className="font-cormorant text-label uppercase tracking-[0.2em] font-medium text-gold-dark mb-4 block">
@@ -45,7 +54,7 @@ export default function Trust() {
             </span>
             <h2 className="font-playfair text-section-heading font-semibold text-charcoal mb-6">
               <TextReveal>
-                Kalyan&apos;s Most Trusted Hospitality Address
+                {"Kalyan's Most Trusted Hospitality Address"}
               </TextReveal>
             </h2>
             <p className="font-inter text-body text-charcoal/60 leading-relaxed">

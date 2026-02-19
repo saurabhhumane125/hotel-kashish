@@ -11,7 +11,9 @@ import Button from "@/components/ui/Button";
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
+  // Track scroll for nav background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -20,6 +22,31 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Track active section
+  useEffect(() => {
+    const sections = navItems.map((item) =>
+      document.getElementById(item.href.replace("#", "")),
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: "-80px 0px -50% 0px" },
+    );
+
+    sections.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Lock body scroll when mobile menu open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -44,8 +71,8 @@ export default function Navigation() {
           "fixed top-0 left-0 right-0 z-50",
           "transition-all duration-500",
           isScrolled
-            ? "bg-charcoal/95 backdrop-blur-md shadow-lg"
-            : "bg-transparent",
+            ? "bg-charcoal/95 backdrop-blur-md shadow-lg py-0"
+            : "bg-transparent py-1",
         )}
       >
         <div className="container-custom">
@@ -56,42 +83,50 @@ export default function Navigation() {
               onClick={(e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
+                setActiveSection("");
               }}
-              className="flex items-center gap-3"
+              className="flex items-center gap-2.5"
             >
               <Image
                 src="/images/brand/logo.png"
                 alt="Hotel Kashish International"
-                width={500}
-                height={500}
-                className="h-14 w-14 sm:h-16 sm:w-16 object-contain rounded-full"
-                style={{ background: "transparent" }}
+                width={120}
+                height={120}
+                className="h-10 w-10 sm:h-12 sm:w-12 object-contain rounded-full"
               />
-
               <div className="flex flex-col leading-none">
-                <span className="font-playfair text-ivory text-lg sm:text-xl font-semibold">
+                <span className="font-playfair text-ivory text-base sm:text-lg font-semibold">
                   Kashish
                 </span>
-                <span className="font-cormorant text-gold text-[10px] sm:text-xs tracking-[0.2em] uppercase">
+                <span className="font-cormorant text-gold text-[9px] sm:text-xs tracking-[0.2em] uppercase">
                   International
                 </span>
               </div>
             </a>
 
             {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
                 <button
                   key={item.href}
                   onClick={() => handleNavClick(item.href)}
                   className={cn(
-                    "font-inter text-sm tracking-wide",
-                    "text-ivory/80 hover:text-gold",
+                    "relative font-inter text-sm tracking-wide px-4 py-2",
                     "transition-colors duration-300",
                     "cursor-pointer bg-transparent border-none",
+                    activeSection === item.href
+                      ? "text-gold"
+                      : "text-ivory/70 hover:text-ivory",
                   )}
                 >
                   {item.label}
+                  {/* Active indicator line */}
+                  <span
+                    className={cn(
+                      "absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gold transition-all duration-300",
+                      activeSection === item.href ? "w-4" : "w-0",
+                    )}
+                  />
                 </button>
               ))}
             </div>
@@ -100,7 +135,7 @@ export default function Navigation() {
             <div className="hidden md:flex items-center gap-4">
               <a
                 href={getPhoneLink(siteConfig.phone)}
-                className="flex items-center gap-2 text-ivory/70 hover:text-gold transition-colors duration-300"
+                className="flex items-center gap-2 text-ivory/60 hover:text-gold transition-colors duration-300"
               >
                 <Phone size={14} />
                 <span className="font-inter text-sm">
@@ -119,7 +154,7 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-ivory p-2 cursor-pointer"
+              className="md:hidden text-ivory p-2 cursor-pointer active:scale-90 transition-transform"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -143,15 +178,13 @@ export default function Navigation() {
           onClick={() => setIsMobileMenuOpen(false)}
         />
 
-        <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
-          {/* Logo in mobile menu */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full gap-6">
           <Image
             src="/images/brand/logo.png"
             alt="Hotel Kashish International"
-            width={500}
-            height={500}
-            className="h-20 w-20 object-contain rounded-full mb-4"
-            style={{ background: "transparent" }}
+            width={120}
+            height={120}
+            className="h-16 w-16 object-contain rounded-full mb-2"
           />
 
           {navItems.map((item, index) => (
@@ -159,16 +192,20 @@ export default function Navigation() {
               key={item.href}
               onClick={() => handleNavClick(item.href)}
               className={cn(
-                "font-playfair text-3xl text-ivory/90 hover:text-gold",
+                "text-2xl sm:text-3xl",
                 "transition-all duration-300",
                 "cursor-pointer bg-transparent border-none",
+                activeSection === item.href
+                  ? "text-gold font-semibold"
+                  : "text-ivory/80 hover:text-gold",
                 isMobileMenuOpen
                   ? "translate-y-0 opacity-100"
                   : "translate-y-4 opacity-0",
               )}
               style={{
+                fontFamily: "var(--font-playfair)",
                 transitionDelay: isMobileMenuOpen
-                  ? `${index * 100 + 200}ms`
+                  ? `${index * 80 + 150}ms`
                   : "0ms",
               }}
             >
@@ -176,10 +213,23 @@ export default function Navigation() {
             </button>
           ))}
 
+          {/* Divider */}
+          <div
+            className={cn(
+              "w-12 h-px bg-gold/30 transition-all duration-500",
+              isMobileMenuOpen ? "opacity-100" : "opacity-0",
+            )}
+            style={{
+              transitionDelay: isMobileMenuOpen
+                ? `${navItems.length * 80 + 150}ms`
+                : "0ms",
+            }}
+          />
+
           <a
             href={getPhoneLink(siteConfig.phone)}
             className={cn(
-              "flex items-center gap-3 text-gold mt-4",
+              "flex items-center gap-3 text-gold",
               "transition-all duration-300",
               isMobileMenuOpen
                 ? "translate-y-0 opacity-100"
@@ -187,12 +237,12 @@ export default function Navigation() {
             )}
             style={{
               transitionDelay: isMobileMenuOpen
-                ? `${navItems.length * 100 + 200}ms`
+                ? `${navItems.length * 80 + 250}ms`
                 : "0ms",
             }}
           >
-            <Phone size={18} />
-            <span className="font-inter text-lg">
+            <Phone size={16} />
+            <span className="font-inter text-base">
               {siteConfig.phoneDisplay}
             </span>
           </a>
