@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import Button from "@/components/ui/Button";
-import SectionLabel from "@/components/ui/SectionLabel";
 
 export default function Hero() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -15,23 +15,26 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with Ken Burns effect */}
       <div className="absolute inset-0">
-        <Image
-          src="/images/hero/hotel-exterior.jpg"
-          alt="Hotel Kashish International - Kalyan East"
-          fill
-          className="object-cover object-center sm:object-center"
-          priority
-          quality={85}
-          sizes="100vw"
-          style={{
-            objectPosition: "center 30%",
-          }}
-        />
-        {/* Dark overlay */}
+        <motion.div
+          className="absolute inset-0"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 8, ease: "linear" }}
+        >
+          <Image
+            src="/images/hero/hotel-exterior.jpg"
+            alt="Hotel Kashish International - Kalyan East"
+            fill
+            className="object-cover"
+            priority
+            quality={85}
+            sizes="100vw"
+            style={{ objectPosition: "center 30%" }}
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal-dark/70 via-charcoal/50 to-charcoal-dark/80 z-10" />
-        {/* Subtle pattern */}
         <div
           className="absolute inset-0 z-10 opacity-5"
           style={{
@@ -44,42 +47,82 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-20 container-custom text-center px-4">
-        <div
-          className={`transition-all duration-1000 delay-200 ${
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+        {/* Top label with line animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+          transition={{
+            duration: 0.8,
+            delay: 0.5,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+          className="mb-8"
         >
-          <SectionLabel dark className="mb-6 block">
-            {siteConfig.name}
-          </SectionLabel>
-        </div>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isLoaded ? { width: 40 } : {}}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="h-px bg-gold/50"
+            />
+            <span className="font-cormorant text-label text-gold uppercase tracking-[0.3em] font-medium">
+              {siteConfig.name}
+            </span>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={isLoaded ? { width: 40 } : {}}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="h-px bg-gold/50"
+            />
+          </div>
+        </motion.div>
 
-        <div
-          className={`transition-all duration-1000 delay-500 ${
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-        >
-          <h1 className="font-playfair text-hero text-ivory mb-6 leading-[1.1]">
+        {/* Main heading — word by word reveal */}
+        <div className="overflow-hidden mb-2">
+          <motion.h1
+            className="font-playfair text-hero text-ivory leading-[1.1]"
+            initial={{ y: "100%" }}
+            animate={isLoaded ? { y: 0 } : {}}
+            transition={{
+              duration: 0.8,
+              delay: 0.7,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+          >
             Where Every Occasion
-            <br />
-            <span className="text-gold">Finds Its Place</span>
-          </h1>
+          </motion.h1>
+        </div>
+        <div className="overflow-hidden mb-6">
+          <motion.h1
+            className="font-playfair text-hero text-gold leading-[1.1]"
+            initial={{ y: "100%" }}
+            animate={isLoaded ? { y: 0 } : {}}
+            transition={{
+              duration: 0.8,
+              delay: 0.9,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+          >
+            Finds Its Place
+          </motion.h1>
         </div>
 
-        <div
-          className={`transition-all duration-1000 delay-700 ${
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+        {/* Subtitle */}
+        <motion.p
+          className="font-inter text-body text-ivory/60 max-w-[600px] mx-auto mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 1.2 }}
         >
-          <p className="font-inter text-body text-ivory/60 max-w-[600px] mx-auto mb-10">
-            {siteConfig.subtitle}
-          </p>
-        </div>
+          {siteConfig.subtitle}
+        </motion.p>
 
-        <div
-          className={`flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-1000 delay-1000 ${
-            isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+        {/* CTAs */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 1.5 }}
         >
           <Button variant="primary" size="lg" href="#celebrate">
             Plan Your Event
@@ -87,21 +130,27 @@ export default function Hero() {
           <Button variant="outline" size="lg" href="#stay">
             Explore Rooms
           </Button>
-        </div>
+        </motion.div>
 
         {/* Scroll indicator */}
-        <div
-          className={`absolute bottom-8 left-1/2 -translate-x-1/2 transition-all duration-1000 delay-[1200ms] ${
-            isLoaded ? "opacity-100" : "opacity-0"
-          }`}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0 }}
+          animate={isLoaded ? { opacity: 1 } : {}}
+          transition={{ delay: 2, duration: 1 }}
         >
           <div className="flex flex-col items-center gap-2">
             <span className="font-cormorant text-ivory/30 text-xs tracking-[0.3em] uppercase">
               Scroll
             </span>
-            <div className="w-px h-8 bg-gradient-to-b from-gold/50 to-transparent" />
+            <motion.div
+              className="w-px h-8 bg-gradient-to-b from-gold/50 to-transparent"
+              animate={{ scaleY: [1, 0.5, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              style={{ transformOrigin: "top" }}
+            />
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

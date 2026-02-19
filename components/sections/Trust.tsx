@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
-import SectionLabel from "@/components/ui/SectionLabel";
-import SectionHeading from "@/components/ui/SectionHeading";
+import SectionDivider from "@/components/ui/SectionDivider";
+import TextReveal from "@/components/ui/TextReveal";
 
 const stats = [
   { number: 700, suffix: "+", label: "Guest Capacity" },
@@ -12,78 +12,19 @@ const stats = [
   { number: 500, suffix: "+", label: "Events Hosted" },
 ];
 
-function AnimatedNumber({
-  target,
-  suffix,
-  isVisible,
-}: {
-  target: number;
-  suffix: string;
-  isVisible: boolean;
-}) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
-    let start = 0;
-    const duration = 2000;
-    const increment = target / (duration / 16);
-
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 16);
-
-    return () => clearInterval(timer);
-  }, [isVisible, target]);
-
-  return (
-    <span className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-charcoal">
-      {count}
-      {suffix}
-    </span>
-  );
-}
-
 export default function Trust() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.3 },
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section ref={sectionRef} className="bg-ivory section-padding">
+    <section className="bg-ivory section-padding">
       <div className="container-custom">
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4 mb-16">
           {stats.map((stat, index) => (
-            <AnimateOnScroll key={stat.label} delay={index * 0.1}>
+            <AnimateOnScroll key={stat.label} delay={index * 0.15}>
               <div className="text-center">
-                <AnimatedNumber
+                <AnimatedCounter
                   target={stat.number}
                   suffix={stat.suffix}
-                  isVisible={isVisible}
+                  className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-charcoal"
                 />
                 <p className="font-cormorant text-sm sm:text-base text-gold-dark tracking-[0.1em] uppercase mt-2">
                   {stat.label}
@@ -93,19 +34,21 @@ export default function Trust() {
           ))}
         </div>
 
-        {/* Gold divider */}
-        <div className="flex justify-center mb-12">
-          <div className="divider-gold" />
-        </div>
+        {/* Animated divider */}
+        <SectionDivider className="mb-12" />
 
-        {/* Brand statement */}
+        {/* Brand statement with text reveal */}
         <AnimateOnScroll>
           <div className="text-center max-w-[720px] mx-auto">
-            <SectionLabel className="mb-4 block">Our Legacy</SectionLabel>
-            <SectionHeading>
-              Kalyan&apos;s Most Trusted Hospitality Address
-            </SectionHeading>
-            <p className="font-inter text-body text-charcoal/60 mt-6 leading-relaxed">
+            <span className="font-cormorant text-label uppercase tracking-[0.2em] font-medium text-gold-dark mb-4 block">
+              Our Legacy
+            </span>
+            <h2 className="font-playfair text-section-heading font-semibold text-charcoal mb-6">
+              <TextReveal>
+                Kalyan&apos;s Most Trusted Hospitality Address
+              </TextReveal>
+            </h2>
+            <p className="font-inter text-body text-charcoal/60 leading-relaxed">
               Hotel Kashish International has been Kalyan East&apos;s address
               for life&apos;s most important moments — from grand weddings to
               intimate celebrations, from business conferences to nights out
