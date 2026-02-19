@@ -74,9 +74,8 @@ export const banquetHalls: BanquetHall[] = [
 
 // Shared amenities shown below all hall cards
 export const banquetAmenities: string[] = [
-  "Large Capacity Air-Conditioned Halls",
-  "Elegant Décor & Stage Setup",
-  "Catering with Customizable Menu",
-  "Bridal Room & Guest Changing Rooms",
-  "Valet Parking & Dedicated Staff Support",
+  "Air-Conditioned Halls",
+  "Stage & Décor Setup",
+  "Customizable Menu",
+  "Valet Parking & Staff",
 ];

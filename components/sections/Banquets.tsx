@@ -24,11 +24,10 @@ import {
 } from "lucide-react";
 
 const amenityIcons: Record<string, React.ReactNode> = {
-  "Large Capacity Air-Conditioned Halls": <AirVent size={20} />,
-  "Elegant Décor & Stage Setup": <Sparkles size={20} />,
-  "Catering with Customizable Menu": <UtensilsCrossed size={20} />,
-  "Bridal Room & Guest Changing Rooms": <DoorOpen size={20} />,
-  "Valet Parking & Dedicated Staff Support": <CarFront size={20} />,
+  "Air-Conditioned Halls": <AirVent size={18} />,
+  "Stage & Décor Setup": <Sparkles size={18} />,
+  "Customizable Menu": <UtensilsCrossed size={18} />,
+  "Valet Parking & Staff": <CarFront size={18} />,
 };
 
 // Single Banquet Card component (reused in both mobile & desktop)
@@ -58,7 +57,8 @@ function BanquetCard({ hall }: { hall: (typeof banquetHalls)[0] }) {
       </div>
 
       {/* Content */}
-      <div className="p-5 sm:p-6 md:p-8">
+      <div className="p-5 sm:p-6 md:p-8 flex flex-col">
+        {" "}
         <div className="space-y-2.5 mb-5">
           <div className="flex items-center gap-3 text-ivory/60">
             <Users size={15} className="text-gold/70 shrink-0" />
@@ -79,7 +79,6 @@ function BanquetCard({ hall }: { hall: (typeof banquetHalls)[0] }) {
             </span>
           </div>
         </div>
-
         <div className="flex flex-wrap gap-1.5 mb-5">
           {hall.bestFor.map((tag) => (
             <span
@@ -90,14 +89,13 @@ function BanquetCard({ hall }: { hall: (typeof banquetHalls)[0] }) {
             </span>
           ))}
         </div>
-
         <Button
           variant="outline"
           size="sm"
           href="#contact"
-          className="w-full justify-center"
+          className="w-full justify-center mt-auto"
         >
-          Inquire About {hall.name}
+          Inquire Now
         </Button>
       </div>
     </div>
@@ -150,14 +148,16 @@ export default function Banquets() {
             <p className="font-cormorant text-sm text-gold tracking-[0.2em] uppercase text-center mb-6 sm:mb-8">
               Every Hall Includes
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-[600px] mx-auto">
               {banquetAmenities.map((amenity) => (
                 <div
                   key={amenity}
-                  className="flex flex-col items-center text-center gap-2 sm:gap-3 group cursor-default"
+                  className="flex flex-col items-center text-center gap-2 group cursor-default"
                 >
-                  <div className="text-gold/60 group-hover:text-gold group-hover:scale-110 transition-all duration-300">
-                    {amenityIcons[amenity] || <Sparkles size={20} />}
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 border border-gold/20 flex items-center justify-center group-hover:border-gold/50 group-hover:scale-110 transition-all duration-300">
+                    <div className="text-gold/60 group-hover:text-gold transition-colors duration-300">
+                      {amenityIcons[amenity] || <Sparkles size={18} />}
+                    </div>
                   </div>
                   <span className="font-inter text-[11px] sm:text-xs text-ivory/50 leading-snug">
                     {amenity}

@@ -81,7 +81,7 @@ export default function MobileCarousel({
     <div className={cn("md:hidden", className)}>
       {/* Card Container */}
       <div className="relative overflow-hidden">
-        <div className="min-h-[420px] relative">
+        <div className="min-h-[520px] relative">
           <AnimatePresence custom={direction} mode="wait">
             <motion.div
               key={current}
