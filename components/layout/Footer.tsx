@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
 import { navItems } from "@/config/navigation";
 import { getPhoneLink, getWhatsAppLink } from "@/lib/utils";
@@ -12,14 +13,25 @@ export default function Footer() {
 
       <div className="container-custom py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+          {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex flex-col mb-4">
-              <span className="font-playfair text-ivory text-xl font-semibold">
-                Kashish
-              </span>
-              <span className="font-cormorant text-gold text-xs tracking-[0.2em] uppercase">
-                International
-              </span>
+            <div className="flex items-center gap-3 mb-4">
+              <Image
+                src="/images/brand/logo.png"
+                alt="Hotel Kashish International"
+                width={500}
+                height={500}
+                className="h-14 w-14 object-contain rounded-full"
+                style={{ background: "transparent" }}
+              />
+              <div className="flex flex-col leading-none">
+                <span className="font-playfair text-ivory text-xl font-semibold">
+                  Kashish
+                </span>
+                <span className="font-cormorant text-gold text-xs tracking-[0.2em] uppercase">
+                  International
+                </span>
+              </div>
             </div>
             <p className="font-inter text-sm text-ivory/50 leading-relaxed max-w-xs">
               Kalyan East&apos;s premier destination for celebrations, dining,
@@ -27,6 +39,7 @@ export default function Footer() {
             </p>
           </div>
 
+          {/* Quick Links */}
           <div>
             <h4 className="font-cormorant text-sm text-gold uppercase tracking-[0.2em] mb-4">
               Explore
@@ -45,6 +58,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Reservations */}
           <div>
             <h4 className="font-cormorant text-sm text-gold uppercase tracking-[0.2em] mb-4">
               Reservations
@@ -77,6 +91,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
             <h4 className="font-cormorant text-sm text-gold uppercase tracking-[0.2em] mb-4">
               Contact

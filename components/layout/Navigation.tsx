@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { navItems } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { cn, scrollToSection, getPhoneLink } from "@/lib/utils";
@@ -49,22 +50,35 @@ export default function Navigation() {
       >
         <div className="container-custom">
           <div className="flex items-center justify-between h-16 sm:h-20">
+            {/* Logo */}
             <a
               href="#"
               onClick={(e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="flex flex-col leading-none"
+              className="flex items-center gap-3"
             >
-              <span className="font-playfair text-ivory text-lg sm:text-xl font-semibold">
-                Kashish
-              </span>
-              <span className="font-cormorant text-gold text-[10px] sm:text-xs tracking-[0.2em] uppercase">
-                International
-              </span>
+              <Image
+                src="/images/brand/logo.png"
+                alt="Hotel Kashish International"
+                width={500}
+                height={500}
+                className="h-14 w-14 sm:h-16 sm:w-16 object-contain rounded-full"
+                style={{ background: "transparent" }}
+              />
+
+              <div className="flex flex-col leading-none">
+                <span className="font-playfair text-ivory text-lg sm:text-xl font-semibold">
+                  Kashish
+                </span>
+                <span className="font-cormorant text-gold text-[10px] sm:text-xs tracking-[0.2em] uppercase">
+                  International
+                </span>
+              </div>
             </a>
 
+            {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
                 <button
@@ -82,6 +96,7 @@ export default function Navigation() {
               ))}
             </div>
 
+            {/* Desktop Right */}
             <div className="hidden md:flex items-center gap-4">
               <a
                 href={getPhoneLink(siteConfig.phone)}
@@ -101,6 +116,7 @@ export default function Navigation() {
               </Button>
             </div>
 
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden text-ivory p-2 cursor-pointer"
@@ -112,6 +128,7 @@ export default function Navigation() {
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       <div
         className={cn(
           "fixed inset-0 z-40 md:hidden",
@@ -127,6 +144,16 @@ export default function Navigation() {
         />
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
+          {/* Logo in mobile menu */}
+          <Image
+            src="/images/brand/logo.png"
+            alt="Hotel Kashish International"
+            width={500}
+            height={500}
+            className="h-20 w-20 object-contain rounded-full mb-4"
+            style={{ background: "transparent" }}
+          />
+
           {navItems.map((item, index) => (
             <button
               key={item.href}
