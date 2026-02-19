@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -19,9 +19,15 @@ export default function TiltCard({
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect touch device
+  useEffect(() => {
+    setIsMobile("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
+    if (isMobile || !ref.current) return;
 
     const rect = ref.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -30,11 +36,8 @@ export default function TiltCard({
     const mouseX = e.clientX - centerX;
     const mouseY = e.clientY - centerY;
 
-    const rotateXValue = (-mouseY / (rect.height / 2)) * tiltAmount;
-    const rotateYValue = (mouseX / (rect.width / 2)) * tiltAmount;
-
-    setRotateX(rotateXValue);
-    setRotateY(rotateYValue);
+    setRotateX((-mouseY / (rect.height / 2)) * tiltAmount);
+    setRotateY((mouseX / (rect.width / 2)) * tiltAmount);
   };
 
   const handleMouseLeave = () => {
@@ -42,6 +45,11 @@ export default function TiltCard({
     setRotateY(0);
     setIsHovered(false);
   };
+
+  // On mobile, just render children without tilt
+  if (isMobile) {
+    return <div className={cn(className)}>{children}</div>;
+  }
 
   return (
     <motion.div
