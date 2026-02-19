@@ -38,6 +38,12 @@ export function getPhoneLink(phone: string): string {
 export function scrollToSection(id: string): void {
   const element = document.getElementById(id);
   if (element) {
-    element.scrollIntoView({ behavior: "smooth", block: "start" });
+    const navHeight = 80; // Height of sticky nav
+    const elementPosition =
+      element.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: elementPosition - navHeight,
+      behavior: "smooth",
+    });
   }
 }

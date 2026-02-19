@@ -48,4 +48,45 @@
   .divider-gold {
     @apply h-px w-16 bg-gold/40;
   }
+
+  /* ========================
+   MOBILE SPECIFIC FIXES
+   ======================== */
+
+  /* Prevent tap highlight on mobile */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Smoother touch scrolling */
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Fix input zoom on iOS (font size must be 16px+) */
+  @media (max-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  /* Better card touch feedback on mobile */
+  @media (max-width: 768px) {
+    .group:active {
+      transform: scale(0.98);
+      transition: transform 0.1s ease;
+    }
+  }
+
+  /* Hide scrollbar globally */
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

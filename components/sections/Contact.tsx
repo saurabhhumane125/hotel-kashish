@@ -1,13 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { getPhoneLink, getWhatsAppLink } from "@/lib/utils";
 import AnimateOnScroll from "@/components/ui/AnimateOnScroll";
-import SectionLabel from "@/components/ui/SectionLabel";
-import SectionHeading from "@/components/ui/SectionHeading";
+import SectionDivider from "@/components/ui/SectionDivider";
+import TextReveal from "@/components/ui/TextReveal";
 import Button from "@/components/ui/Button";
-import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Send,
+  CheckCircle,
+} from "lucide-react";
 
 const eventTypes = [
   "Wedding",
@@ -28,6 +36,116 @@ const guestRanges = [
   "700 – 1000",
   "1000+",
 ];
+
+// Floating label input component
+function FloatingInput({
+  id,
+  name,
+  type = "text",
+  label,
+  required = false,
+  value,
+  onChange,
+}: {
+  id: string;
+  name: string;
+  type?: string;
+  label: string;
+  required?: boolean;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  return (
+    <div className="relative">
+      <input
+        type={type}
+        id={id}
+        name={name}
+        required={required}
+        value={value}
+        onChange={onChange}
+        placeholder=" "
+        className="peer w-full px-4 pt-6 pb-2 bg-white border border-stone-dark/30 font-inter text-sm text-charcoal focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/20 transition-all duration-300"
+      />
+      <label
+        htmlFor={id}
+        className="absolute left-4 top-1/2 -translate-y-1/2 font-inter text-sm text-charcoal/40 transition-all duration-300 pointer-events-none peer-focus:top-3 peer-focus:text-xs peer-focus:text-gold peer-[:not(:placeholder-shown)]:top-3 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-charcoal/50"
+      >
+        {label}
+        {required && " *"}
+      </label>
+    </div>
+  );
+}
+
+function FloatingSelect({
+  id,
+  name,
+  label,
+  required = false,
+  value,
+  onChange,
+  options,
+}: {
+  id: string;
+  name: string;
+  label: string;
+  required?: boolean;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: string[];
+}) {
+  return (
+    <div className="relative">
+      <select
+        id={id}
+        name={name}
+        required={required}
+        value={value}
+        onChange={onChange}
+        className={`w-full px-4 pt-6 pb-2 bg-white border border-stone-dark/30 font-inter text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/20 transition-all duration-300 appearance-none ${
+          value ? "text-charcoal" : "text-transparent"
+        }`}
+      >
+        <option value=""></option>
+        {options.map((opt) => (
+          <option key={opt} value={opt} className="text-charcoal">
+            {opt}
+          </option>
+        ))}
+      </select>
+      <label
+        htmlFor={id}
+        className={`absolute left-4 font-inter transition-all duration-300 pointer-events-none ${
+          value
+            ? "top-3 text-xs text-charcoal/50"
+            : "top-1/2 -translate-y-1/2 text-sm text-charcoal/40"
+        }`}
+      >
+        {label}
+        {required && " *"}
+      </label>
+      {/* Custom arrow */}
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          fill="none"
+          className="text-charcoal/30"
+        >
+          <path
+            d="M3 4.5L6 7.5L9 4.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -84,178 +202,176 @@ Message: ${formData.message || "No additional message"}`;
         preferredDate: "",
         message: "",
       });
-    }, 3000);
+    }, 4000);
   };
-
-  const inputStyles =
-    "w-full px-4 py-3 bg-white border border-stone-dark/30 font-inter text-sm text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-gold transition-colors duration-300";
-
-  const labelStyles =
-    "font-inter text-xs text-charcoal/60 uppercase tracking-wider mb-1.5 block";
 
   return (
     <section id="contact" className="bg-ivory-light section-padding">
       <div className="container-custom">
         <AnimateOnScroll>
-          <div className="text-center mb-16">
-            <SectionLabel className="mb-4 block">Connect</SectionLabel>
-            <SectionHeading>Let&apos;s Plan Together</SectionHeading>
-            <p className="font-inter text-body text-charcoal/60 max-w-[600px] mx-auto mt-6">
+          <div className="text-center mb-4">
+            <span className="font-cormorant text-label uppercase tracking-[0.2em] font-medium text-gold-dark mb-4 block">
+              Connect
+            </span>
+            <h2 className="font-playfair text-section-heading font-semibold text-charcoal mb-6">
+              <TextReveal>Let&apos;s Plan Together</TextReveal>
+            </h2>
+            <p className="font-inter text-body text-charcoal/60 max-w-[600px] mx-auto">
               Whether it&apos;s a grand wedding, an intimate gathering, or a
               room booking — reach out and we&apos;ll make it happen.
             </p>
           </div>
         </AnimateOnScroll>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
+        <SectionDivider className="mb-12" />
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-16">
           {/* Form */}
           <AnimateOnScroll className="lg:col-span-3">
-            <div className="bg-white border border-stone-dark/20 p-6 sm:p-8 lg:p-10">
-              <h3 className="font-playfair text-xl text-charcoal mb-6">
-                Send an Inquiry
-              </h3>
+            <div className="bg-white border border-stone-dark/15 p-6 sm:p-8 lg:p-10 shadow-sm">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-1 h-6 bg-gold" />
+                <h3 className="font-playfair text-xl text-charcoal">
+                  Send an Inquiry
+                </h3>
+              </div>
 
               {isSubmitted ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Send size={24} className="text-green-600" />
-                  </div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-12"
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                    className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <CheckCircle size={32} className="text-green-600" />
+                  </motion.div>
                   <h4 className="font-playfair text-xl text-charcoal mb-2">
                     Inquiry Sent!
                   </h4>
                   <p className="font-inter text-sm text-charcoal/60">
                     We&apos;ll get back to you within 24 hours.
                   </p>
-                </div>
+                </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label htmlFor="name" className={labelStyles}>
-                        Name *
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Your full name"
-                        className={inputStyles}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="phone" className={labelStyles}>
-                        Phone *
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        required
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="+91 XXXXX XXXXX"
-                        className={inputStyles}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className={labelStyles}>
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-4 sm:space-y-5"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <FloatingInput
+                      id="name"
+                      name="name"
+                      label="Your Name"
+                      required
+                      value={formData.name}
                       onChange={handleChange}
-                      placeholder="your@email.com"
-                      className={inputStyles}
+                    />
+                    <FloatingInput
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      label="Phone Number"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label htmlFor="eventType" className={labelStyles}>
-                        Event Type *
-                      </label>
-                      <select
-                        id="eventType"
-                        name="eventType"
-                        required
-                        value={formData.eventType}
-                        onChange={handleChange}
-                        className={inputStyles}
-                      >
-                        <option value="">Select event type</option>
-                        {eventTypes.map((type) => (
-                          <option key={type} value={type}>
-                            {type}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="estimatedGuests" className={labelStyles}>
-                        Estimated Guests
-                      </label>
-                      <select
-                        id="estimatedGuests"
-                        name="estimatedGuests"
-                        value={formData.estimatedGuests}
-                        onChange={handleChange}
-                        className={inputStyles}
-                      >
-                        <option value="">Select range</option>
-                        {guestRanges.map((range) => (
-                          <option key={range} value={range}>
-                            {range}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                  <FloatingInput
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="Email Address"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <FloatingSelect
+                      id="eventType"
+                      name="eventType"
+                      label="Event Type"
+                      required
+                      value={formData.eventType}
+                      onChange={handleChange}
+                      options={eventTypes}
+                    />
+                    <FloatingSelect
+                      id="estimatedGuests"
+                      name="estimatedGuests"
+                      label="Estimated Guests"
+                      value={formData.estimatedGuests}
+                      onChange={handleChange}
+                      options={guestRanges}
+                    />
                   </div>
 
-                  <div>
-                    <label htmlFor="preferredDate" className={labelStyles}>
-                      Preferred Date
-                    </label>
+                  <div className="relative">
                     <input
                       type="date"
                       id="preferredDate"
                       name="preferredDate"
                       value={formData.preferredDate}
                       onChange={handleChange}
-                      className={inputStyles}
+                      className="w-full px-4 pt-6 pb-2 bg-white border border-stone-dark/30 font-inter text-sm text-charcoal focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/20 transition-all duration-300"
                     />
+                    <label
+                      htmlFor="preferredDate"
+                      className="absolute left-4 top-3 font-inter text-xs text-charcoal/50 pointer-events-none"
+                    >
+                      Preferred Date
+                    </label>
                   </div>
 
-                  <div>
-                    <label htmlFor="message" className={labelStyles}>
-                      Message
-                    </label>
+                  <div className="relative">
                     <textarea
                       id="message"
                       name="message"
                       rows={4}
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Tell us about your event or requirements..."
-                      className={`${inputStyles} resize-none`}
+                      placeholder=" "
+                      className="peer w-full px-4 pt-6 pb-2 bg-white border border-stone-dark/30 font-inter text-sm text-charcoal placeholder:text-transparent focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/20 transition-all duration-300 resize-none"
                     />
+                    <label
+                      htmlFor="message"
+                      className="absolute left-4 top-4 font-inter text-sm text-charcoal/40 transition-all duration-300 pointer-events-none peer-focus:top-2 peer-focus:text-xs peer-focus:text-gold peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-charcoal/50"
+                    >
+                      Tell us about your event...
+                    </label>
                   </div>
 
                   <Button
                     type="submit"
                     variant="primary"
                     size="lg"
-                    className="w-full justify-center"
+                    className="w-full justify-center mt-2"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Sending..." : "Send Inquiry"}
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{
+                            duration: 1,
+                            repeat: Infinity,
+                            ease: "linear",
+                          }}
+                          className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                        />
+                        Sending...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <Send size={16} />
+                        Send Inquiry
+                      </span>
+                    )}
                   </Button>
                 </form>
               )}
@@ -264,18 +380,26 @@ Message: ${formData.message || "No additional message"}`;
 
           {/* Contact Info */}
           <AnimateOnScroll delay={0.2} className="lg:col-span-2">
-            <div className="space-y-8">
-              <div className="bg-white border border-stone-dark/20 p-6 sm:p-8">
-                <h3 className="font-playfair text-xl text-charcoal mb-6">
-                  Quick Contact
-                </h3>
-                <div className="space-y-4">
+            <div className="space-y-6">
+              {/* Quick Actions */}
+              <div className="bg-white border border-stone-dark/15 p-6 sm:p-8 shadow-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1 h-6 bg-gold" />
+                  <h3 className="font-playfair text-xl text-charcoal">
+                    Quick Contact
+                  </h3>
+                </div>
+
+                <div className="space-y-3">
                   <a
                     href={getPhoneLink(siteConfig.phone)}
-                    className="flex items-center gap-4 p-4 bg-ivory/50 hover:bg-gold/5 transition-colors duration-300 group"
+                    className="flex items-center gap-4 p-4 bg-ivory/50 hover:bg-gold/5 transition-all duration-300 group active:scale-[0.98]"
                   >
                     <div className="w-10 h-10 bg-gold/10 flex items-center justify-center shrink-0">
-                      <Phone size={18} className="text-gold" />
+                      <Phone
+                        size={18}
+                        className="text-gold group-hover:text-gold-dark transition-colors"
+                      />
                     </div>
                     <div>
                       <p className="font-inter text-xs text-charcoal/40 uppercase tracking-wider">
@@ -294,10 +418,13 @@ Message: ${formData.message || "No additional message"}`;
                     )}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-4 bg-ivory/50 hover:bg-green-50/50 transition-colors duration-300 group"
+                    className="flex items-center gap-4 p-4 bg-ivory/50 hover:bg-green-50/50 transition-all duration-300 group active:scale-[0.98]"
                   >
                     <div className="w-10 h-10 bg-green-50 flex items-center justify-center shrink-0">
-                      <MessageCircle size={18} className="text-green-600" />
+                      <MessageCircle
+                        size={18}
+                        className="text-green-600 group-hover:text-green-700 transition-colors"
+                      />
                     </div>
                     <div>
                       <p className="font-inter text-xs text-charcoal/40 uppercase tracking-wider">
@@ -311,10 +438,13 @@ Message: ${formData.message || "No additional message"}`;
 
                   <a
                     href={`mailto:${siteConfig.email}`}
-                    className="flex items-center gap-4 p-4 bg-ivory/50 hover:bg-gold/5 transition-colors duration-300 group"
+                    className="flex items-center gap-4 p-4 bg-ivory/50 hover:bg-gold/5 transition-all duration-300 group active:scale-[0.98]"
                   >
                     <div className="w-10 h-10 bg-gold/10 flex items-center justify-center shrink-0">
-                      <Mail size={18} className="text-gold" />
+                      <Mail
+                        size={18}
+                        className="text-gold group-hover:text-gold-dark transition-colors"
+                      />
                     </div>
                     <div>
                       <p className="font-inter text-xs text-charcoal/40 uppercase tracking-wider">
@@ -329,15 +459,19 @@ Message: ${formData.message || "No additional message"}`;
               </div>
 
               {/* Address + Map */}
-              <div className="bg-white border border-stone-dark/20 p-6 sm:p-8">
-                <h3 className="font-playfair text-xl text-charcoal mb-4">
-                  Find Us
-                </h3>
+              <div className="bg-white border border-stone-dark/15 p-6 sm:p-8 shadow-sm">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-1 h-6 bg-gold" />
+                  <h3 className="font-playfair text-xl text-charcoal">
+                    Find Us
+                  </h3>
+                </div>
+
                 <a
                   href={siteConfig.address.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-3 text-charcoal/60 hover:text-gold-dark transition-colors duration-300 mb-6"
+                  className="flex items-start gap-3 text-charcoal/60 hover:text-gold-dark transition-colors duration-300 mb-6 active:scale-[0.98]"
                 >
                   <MapPin size={18} className="text-gold shrink-0 mt-0.5" />
                   <div className="font-inter text-sm leading-relaxed">
@@ -351,10 +485,9 @@ Message: ${formData.message || "No additional message"}`;
                   </div>
                 </a>
 
-                {/* Google Map */}
-                <div className="h-48 overflow-hidden">
+                <div className="h-48 overflow-hidden border border-stone-dark/10">
                   <iframe
-                    src="https://maps.app.goo.gl/NnaNmkEQJnQG7rvo7"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3767.0!2d73.1355!3d19.2437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7bd8a0b8e3c7b%3A0x1234567890abcdef!2sHotel%20Kashish%20International!5e0!3m2!1sen!2sin"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
